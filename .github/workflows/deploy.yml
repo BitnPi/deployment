@@ -26,3 +26,4 @@ jobs:
     - name: Deploy Bicep file
       run: |
         az deployment group create --resource-group demo --template-file Azure_Telemetry_Template.bicep
+        
