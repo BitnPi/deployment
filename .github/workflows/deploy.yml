@@ -24,6 +24,10 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Verify Azure CLI Login
+      run: |
+        az account show
+
     - name: Deploy Bicep file
       run: |
         az deployment group create --resource-group demo --template-file Azure_Telemetry_Template.bicep
