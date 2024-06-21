@@ -1,0 +1,24 @@
+name: Deploy Azure Resource
+
+on:
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_POSTGRES_CREDENTIALS }}
+
+    - name: Deploy Bicep file
+      run: |
+        az deployment group create --resource-group myPostgreDemoResourceGroup --template-file Azure_Postgres_Template.bicep
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_POSTGRES_CREDENTIALS }}
+
+    - name: Logout of Azure
+      run: az logout
