@@ -14,14 +14,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Install Azure CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y azure-cli
+
     - name: Login to Azure
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    - name: Install specific Azure CLI version
-      run: |
-        sudo apt-get update && sudo apt-get install --only-upgrade -y azure-cli=${{ env.AZ_CLI_VERSION }}
 
     - name: Verify Azure CLI Login
       run: |
@@ -29,7 +30,4 @@ jobs:
 
     - name: Deploy Bicep file
       run: |
-        az deployment group create --resource-group demo --template-file Azure_Telemetry_Template.bicep --parameters parameterFile.parameters.json
-
-    env:
-      AZ_CLI_VERSION: '2.30.0'
+        az deployment group create --resource-group demo --template-file Azure_Telemetry_Template.bicep
